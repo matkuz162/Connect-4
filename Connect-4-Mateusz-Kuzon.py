@@ -14,6 +14,8 @@ def display(board):
     print("0 | 1 | 2 | 3 | 4 | 5 | 6")
 
 #def check_winner(board,player):
+#    for row in board:
+        
 
 
 def is_full(board):
