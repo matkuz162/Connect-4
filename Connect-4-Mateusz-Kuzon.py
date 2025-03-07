@@ -19,6 +19,9 @@ def display(board):
 def is_full(board):
   return all(board[row][col]!=" " for row in range(7) for col in range(6))
 
+def random_agent_move(board):
+  empty_cells = [(row,col) for row in range(7)for col in range(6) if board[0][col] ==  " " ]
+  return random.choice(empty_cells)
 
 def play_game():
     board = [[" " for _ in range(7)] for _ in range(6)]
@@ -28,7 +31,11 @@ def play_game():
         try:
             col = int(input("Enter your move (0-6): "))
             if board[0][col] == " ":
-                board[0][col] = red+u'\u25CF'+default
+                row = range(5,0,-1)
+                for i in row:
+                    if board[i][col] == " ":
+                        board[i][col] = red+u'\u25CF'+default
+                        break
                 break
             else:
                 print("Column Full. Try again.")
