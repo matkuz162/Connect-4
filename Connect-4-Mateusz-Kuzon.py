@@ -29,6 +29,7 @@ def random_agent_move(board):
         for i in row:
             if board[i][random_cell] == " ":
                 board[i][random_cell] = yellow+u'\u25CF'+default
+                os.system('cls||clear')
                 display(board)
                 print(f"Random Agent placed at ({random_cell}).")
                 break
@@ -72,6 +73,7 @@ def play_game():
         #random agent
         random_agent_move(board)
 
+
         #check winner
 
         if is_full(board):
@@ -83,9 +85,6 @@ def play_game():
 
 
 
+
+
 play_game()
-
-
-
-#print(red+u'\u25CF')
-#print(yellow+u'\u25CF')
