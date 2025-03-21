@@ -70,7 +70,7 @@ def play_game():
 
 
         #random agent
-        random_agent_move()
+        random_agent_move(board)
 
         #check winner
 
