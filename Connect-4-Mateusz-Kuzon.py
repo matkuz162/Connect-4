@@ -15,7 +15,9 @@ def display(board):
     print("0 | 1 | 2 | 3 | 4 | 5 | 6")
 
 #def check_winner(board,player):
-#    for row in board:
+ #   for row in board:
+ #       for i in row:
+ #           if board[i]
         
 
 
@@ -23,10 +25,12 @@ def is_full(board):
   return all(board[row][col]!=" " for row in range(7) for col in range(6))
 
 def random_agent_move(board):
+  print("AI Move...")
   time.sleep(2)
   random_cell = random.randint(0,6)
   while True:
     if board[0][random_cell] == " ":
+        
         row = range(5,0,-1)
         for i in row:
             if board[i][random_cell] == " ":
