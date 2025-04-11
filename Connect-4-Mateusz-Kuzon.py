@@ -1,5 +1,6 @@
 import random
 import os
+import time
 os.system('color')
 
 red='\33[31m'
@@ -22,6 +23,7 @@ def is_full(board):
   return all(board[row][col]!=" " for row in range(7) for col in range(6))
 
 def random_agent_move(board):
+  time.sleep(2)
   random_cell = random.randint(0,6)
   while True:
     if board[0][random_cell] == " ":
