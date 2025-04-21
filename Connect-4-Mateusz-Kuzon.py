@@ -24,6 +24,12 @@ def display(board):
 def is_full(board):
   return all(board[row][col]!=" " for row in range(7) for col in range(6))
 
+def col_free(board, column):
+    if board[0][column] == " ":
+        return True
+    else:
+        return False
+
 def random_agent_move(board):
   print("AI Move...")
   time.sleep(2)
@@ -43,31 +49,37 @@ def random_agent_move(board):
     else:
         random_cell = random.randint(0,6)
 
+def player_move(board):
+    while True:
+        try:
+            col = int(input("Enter your move (0-6): "))
+            if col_free(board, col):
+                row = range(5,0,-1)
+                for i in row:
+                    if board[i][col] == " ":
+                        board[i][col] = red+u'\u25CF'+default
+                        break
+                break
+            else:
+                print("Column Full. Try again.")
+        except (ValueError, IndexError):
+            os.system('cls||clear')
+            display(board)
+            print("Invalid input. Enter column numbers between 0 and 6.")
+
+    os.system('cls||clear')
+    display(board)
+    
+
+
 
 def play_game():
     board = [[" " for _ in range(7)] for _ in range(6)]
     display(board)
 
     while True:
-        while True:
-            try:
-                col = int(input("Enter your move (0-6): "))
-                if board[0][col] == " ":
-                    row = range(5,0,-1)
-                    for i in row:
-                        if board[i][col] == " ":
-                            board[i][col] = red+u'\u25CF'+default
-                            break
-                    break
-                else:
-                    print("Column Full. Try again.")
-            except (ValueError, IndexError):
-                os.system('cls||clear')
-                display(board)
-                print("Invalid input. Enter column numbers between 0 and 6.")
 
-        os.system('cls||clear')
-        display(board)
+        player_move(board)
 
         #check winner
 
