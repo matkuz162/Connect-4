@@ -3,6 +3,30 @@ import os
 import time
 
 
+def menu():
+    print("[1] Play Manually")
+    print("[2] AI vs AI")
+    print("[3] View Statistics")
+    print("[4] Quit")
+
+    option = int(input("Enter Option:"))
+
+    while option !=0:
+        if option ==1:
+            print(1)
+        elif option ==2:
+            print(2)
+        elif option ==3:
+            print(3)
+        else:
+            print("Invalid Input")
+
+        menu()
+        option = int(input("Enter Option:"))
+
+    exit()
+
+
 def display(board):
     
     for row in board:
@@ -122,4 +146,4 @@ def play_game():
 
 
 
-play_game()
+menu()
