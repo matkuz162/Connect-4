@@ -10,10 +10,29 @@ def display(board):
         print("-"*25)
     print("0 | 1 | 2 | 3 | 4 | 5 | 6")
 
-#def check_winner(board,player):
- #   for row in board:
- #       for i in row:
- #           if board[i]
+
+def check_winner(board, move):
+    for row in range(6):
+        for col in range(4):
+            if all(board[row][col + i] == move for i in range(4)):
+                return True
+
+    for col in range(7):
+        for row in range(3):
+            if all(board[row + i][col] == move for i in range(4)):
+                return True
+
+    for row in range(3):
+        for col in range(4):
+            if all(board[row + i][col + i] == move for i in range(4)):
+                return True
+
+    for row in range(3, 6):
+        for col in range(4):
+            if all(board[row - i][col + i] == move for i in range(4)):
+                return True
+
+    return False
         
 
 def random_agent_move(board):
@@ -77,8 +96,9 @@ def play_game():
     while True:
 
         player_move(board)
-
-        #check winner
+        if check_winner(board, '●'):
+            print("You win!")
+            break
 
         if is_full(board):
             print("The game resulted in a draw")
@@ -87,9 +107,9 @@ def play_game():
 
         #random agent
         random_agent_move(board)
-
-
-        #check winner
+        if check_winner(board, '○'):
+            print("AI wins!")
+            break
 
         if is_full(board):
             print("The game resulted in a draw")
