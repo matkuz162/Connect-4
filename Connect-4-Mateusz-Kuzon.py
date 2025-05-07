@@ -4,27 +4,16 @@ import time
 
 
 def display(board):
-    
     for row in board:
         print(" | ".join(row))
-        print("-"*25)
-    print("0 | 1 | 2 | 3 | 4 | 5 | 6")
+        print("-" * 29)
+    print(" 0   1   2   3   4   5   6")
 
 #def check_winner(board,player):
  #   for row in board:
  #       for i in row:
  #           if board[i]
         
-
-
-def is_full(board):
-  return all(board[row][col]!=" " for row in range(7) for col in range(6))
-
-def col_free(board, column):
-    if board[0][column] == " ":
-        return True
-    else:
-        return False
 
 def random_agent_move(board):
   print("AI Move...")
@@ -33,7 +22,7 @@ def random_agent_move(board):
   while True:
     if board[0][random_cell] == " ":
         
-        row = range(5,0,-1)
+        row = range(5,-1,-1)
         for i in row:
             if board[i][random_cell] == " ":
                 board[i][random_cell] = '○'
@@ -45,12 +34,21 @@ def random_agent_move(board):
     else:
         random_cell = random.randint(0,6)
 
+def is_full(board):
+    return all(board[row][col] != " " for row in range(6) for col in range(7))
+
+def col_free(board, column):
+    if board[0][column] == " ":
+        return True
+    else:
+        return False
+
 def player_move(board):
     while True:
         try:
             col = int(input("Enter your move (0-6): "))
             if col_free(board, col):
-                row = range(5,0,-1)
+                row = range(5,-1,-1)
                 for i in row:
                     if board[i][col] == " ":
                         board[i][col] = '●'
