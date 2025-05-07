@@ -48,6 +48,8 @@ def player_move(board):
     while True:
         try:
             col = int(input("Enter your move (0-6): "))
+            if col < 0 or col > 6:
+                raise ValueError
             if col_free(board, col):
                 row = range(5,-1,-1)
                 for i in row:
