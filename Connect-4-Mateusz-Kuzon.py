@@ -1,11 +1,7 @@
 import random
 import os
 import time
-os.system('color')
 
-red='\33[31m'
-yellow='\33[33m'
-default='\033[0m'
 
 def display(board):
     
@@ -40,7 +36,7 @@ def random_agent_move(board):
         row = range(5,0,-1)
         for i in row:
             if board[i][random_cell] == " ":
-                board[i][random_cell] = yellow+u'\u25CF'+default
+                board[i][random_cell] = '○'
                 os.system('cls||clear')
                 display(board)
                 print(f"Random Agent placed at ({random_cell}).")
@@ -57,7 +53,7 @@ def player_move(board):
                 row = range(5,0,-1)
                 for i in row:
                     if board[i][col] == " ":
-                        board[i][col] = red+u'\u25CF'+default
+                        board[i][col] = '●'
                         break
                 break
             else:
