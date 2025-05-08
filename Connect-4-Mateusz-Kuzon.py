@@ -1,9 +1,11 @@
 import random
 import os
 import time
-
 import numpy as np
 
+from Agents.RandomAgent import random_agent_move
+from Agents.SmartAgent import smart_agent_move
+from Agents.MiniMaxAgent import AI_minimax_Agent
 
 
 
@@ -97,79 +99,6 @@ def check_winner(board, move):
     return False
         
 
-def random_agent_move(board):
-  print("AI Move...")
-  time.sleep(2)
-  random_cell = random.randint(0,6)
-  while True:
-    if board[0][random_cell] == " ":
-        
-        row = range(5,-1,-1)
-        for i in row:
-            if board[i][random_cell] == " ":
-                board[i][random_cell] = '○'
-                os.system('cls||clear')
-                display(board)
-                print(f"Random Agent placed at ({random_cell}).")
-                break
-        break
-    else:
-        random_cell = random.randint(0,6)
-
-def smart_agent_move(board):
-    print("AI Move...")
-    time.sleep(2)
-
-    #rule 1 - win if possible
-    for col in get_available_moves(board):
-        row = find_row_for_col(board, col)
-        board[row][col] = '○'
-        if check_winner(board, '○'):
-            os.system('cls||clear')
-            display(board)
-            print(f"Smart Agent placed at ({col}).")
-            return
-        board[row][col] = ' '
-
-    #rule 2 - block if possible
-    for col in get_available_moves(board):
-        row = find_row_for_col(board, col)
-        board[row][col] = '●'
-        if check_winner(board, '●'):
-            board[row][col] = '○'
-            os.system('cls||clear')
-            display(board)
-            print(f"Smart Agent placed at ({col}).")
-            return
-        board[row][col] = ' '
-
-    #rule 3 - random move
-    random_cell = random.randint(0,6)
-    while True:
-        if board[0][random_cell] == " ":
-            
-            row = range(5,-1,-1)
-            for i in row:
-                if board[i][random_cell] == " ":
-                    board[i][random_cell] = '○'
-                    os.system('cls||clear')
-                    display(board)
-                    print(f"Random Agent placed at ({random_cell}).")
-                    break
-            break
-        else:
-            random_cell = random.randint(0,6)
-
-
-def find_row_for_col(board, col):
-    for row in range(5, -1, -1):
-        if board[row][col] == " ":
-            return row
-    return None
-
-def get_available_moves(board):
-    available_move = [col for col in range(7) if board[0][col] == " "]
-    return available_move
 
 
 def is_full(board):
@@ -209,6 +138,8 @@ def player_move(board):
     
 
 
+startfunction()
+
 
 def manual_play_game(agent):
     os.system('cls||clear')
@@ -232,7 +163,7 @@ def manual_play_game(agent):
         elif agent =="Smart":
             smart_agent_move(board)
         elif agent =="Mini-Max":
-            print("mm")
+            print('mm')
         elif agent =="ML":
             print("ml")
 
@@ -245,4 +176,4 @@ def manual_play_game(agent):
             print("The game resulted in a draw")
             break
 
-startfunction()
+

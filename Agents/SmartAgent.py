@@ -1,0 +1,59 @@
+import random
+import time
+import os
+
+
+def smart_agent_move(board, display_function, check_winner_function):
+    print("AI Move...")
+    time.sleep(2)
+
+    #rule 1 - win if possible
+    for col in get_available_moves(board):
+        row = find_row_for_col(board, col)
+        board[row][col] = '○'
+        if check_winner_function(board, '○'):
+            os.system('cls||clear')
+            display_function(board)
+            print(f"Smart Agent placed at ({col}).")
+            return
+        board[row][col] = ' '
+
+    #rule 2 - block if possible
+    for col in get_available_moves(board):
+        row = find_row_for_col(board, col)
+        board[row][col] = '●'
+        if check_winner_function(board, '●'):
+            board[row][col] = '○'
+            os.system('cls||clear')
+            display_function(board)
+            print(f"Smart Agent placed at ({col}).")
+            return
+        board[row][col] = ' '
+
+    #rule 3 - random move
+    random_cell = random.randint(0,6)
+    while True:
+        if board[0][random_cell] == " ":
+            
+            row = range(5,-1,-1)
+            for i in row:
+                if board[i][random_cell] == " ":
+                    board[i][random_cell] = '○'
+                    os.system('cls||clear')
+                    display_function(board)
+                    print(f"Random Agent placed at ({random_cell}).")
+                    break
+            break
+        else:
+            random_cell = random.randint(0,6)
+
+
+def find_row_for_col(board, col):
+    for row in range(5, -1, -1):
+        if board[row][col] == " ":
+            return row
+    return None
+
+def get_available_moves(board):
+    available_move = [col for col in range(7) if board[0][col] == " "]
+    return available_move
