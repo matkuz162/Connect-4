@@ -20,7 +20,7 @@ def smart_agent_move(board, display_function, check_winner_function,icon,display
                 os.system('cls||clear')
                 display_function(board)
                 print(f"Smart Agent placed at ({col}).")
-            return
+            return col
         board[row][col] = ' '
 
     #rule 2 - block if possible
@@ -33,26 +33,26 @@ def smart_agent_move(board, display_function, check_winner_function,icon,display
                 os.system('cls||clear')
                 display_function(board)
                 print(f"Smart Agent placed at ({col}).")
-            return
+            return col
         board[row][col] = ' '
 
     #rule 3 - random move
-    random_cell = random.randint(0,6)
+    random_col = random.randint(0,6)
     while True:
-        if board[0][random_cell] == " ":
+        if board[0][random_col] == " ":
             
             row = range(5,-1,-1)
             for i in row:
-                if board[i][random_cell] == " ":
-                    board[i][random_cell] = icon
+                if board[i][random_col] == " ":
+                    board[i][random_col] = icon
                     if displayed == True:
                         os.system('cls||clear')
                         display_function(board)
-                        print(f"Random Agent placed at ({random_cell}).")
-                    break
+                        print(f"Random Agent placed at ({random_col}).")
+                    return random_col
             break
         else:
-            random_cell = random.randint(0,6)
+            random_col = random.randint(0,6)
 
 
 def find_row_for_col(board, col):

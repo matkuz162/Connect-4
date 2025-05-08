@@ -6,6 +6,7 @@ import numpy as np
 from Agents.RandomAgent import random_agent_move
 from Agents.SmartAgent import smart_agent_move
 from Agents.MiniMaxAgent import AI_minimax_Agent
+from AIPlay import random_vs_smart, smart_vs_minimax, minimax_vs_ml
 
 def title():
     print(" _____                             _       ___ ")
@@ -24,62 +25,6 @@ def menu():
     print("[3] View Statistics")
     print("[4] Quit")
 
-
-
-def random_vs_smart():
-    random_wins = 0
-    smart_wins = 0
-    draws = 0
-
-    os.system('cls||clear')
-    print("Loading...")
-
-    for game in range(0, 500):
-        
-        board = [[" " for _ in range(7)] for _ in range(6)]
-
-        while True:
-
-            random_agent_move(board,display,'●',False)
-            if check_winner(board, '●'):
-                random_wins += 1
-                break
-
-            if is_full(board):
-                draws += 1
-                break
-
-
-            smart_agent_move(board, display, check_winner,'○',False)
-
-            if check_winner(board, '○'):
-                smart_wins += 1
-                break
-
-            if is_full(board):
-                draws += 1
-                break
-
-    os.system('cls||clear')
-    print(f"Random Agent won: {random_wins} times.")
-    print(f"Smart Agent won: {smart_wins} times.")
-    print(f"The game ended in a draw: {draws} times.")
-
-
-
-
-def smart_vs_minimax():
-    print("dsf")
-
-def minimax_vs_ml():
-    print("dsf")
-
-
-
-
-
-
-    
 
 
 def manual_play_game(agent):
@@ -166,12 +111,13 @@ def options(option):
             try:
                 agent_option = int(input("Enter agent option (1-3): "))
                 matchups = {
+                
                     1: random_vs_smart,
                     2: smart_vs_minimax,
                     3: minimax_vs_ml
                 }
                 if agent_option in matchups:
-                    matchups[agent_option]()  # Call the appropriate function
+                    matchups[agent_option](display,check_winner,is_full)  # Call the appropriate function
                     break
                 else:
                     print("Invalid option selected. Please enter a number between 1 and 4.")
