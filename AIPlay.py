@@ -53,13 +53,12 @@ def smart_vs_minimax(display_function, check_winner_function, is_full_function):
     smart_wins = 0
     minimax_wins = 0
     draws = 0
-
     os.system('cls||clear')
     print("Loading...")
 
     for game in range(0, 10):
         
-        board = [[" " for _ in range(7)] for _ in range(6)]
+        board = [[" " for _ in range(7)] for _ in range(4)]
 
         while True:
 
