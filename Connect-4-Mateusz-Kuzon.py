@@ -31,6 +31,10 @@ def manual_play_game(agent):
             print("The game resulted in a draw")
             break
 
+        print("AI Move...")
+        time.sleep(2)
+        os.system('cls||clear')
+
 
         if agent == "Random":
             random_agent_move(board, display)
@@ -38,7 +42,7 @@ def manual_play_game(agent):
             smart_agent_move(board, display, check_winner)
         elif agent =="Mini-Max":
             minimax_agent = AI_minimax_Agent()
-            col = minimax_agent.best_move(board)
+            col = minimax_agent.best_move(board, check_winner, is_full)
             for row in reversed(range(6)):
                 if board[row][col] == " ":
                     board[row][col] = '○'

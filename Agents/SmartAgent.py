@@ -4,8 +4,6 @@ import os
 
 
 def smart_agent_move(board, display_function, check_winner_function):
-    print("AI Move...")
-    time.sleep(2)
 
     #rule 1 - win if possible
     for col in get_available_moves(board):

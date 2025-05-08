@@ -4,8 +4,7 @@ import os
 
 
 def random_agent_move(board, display_function):
-  print("AI Move...")
-  time.sleep(2)
+
   random_cell = random.randint(0,6)
   while True:
     if board[0][random_cell] == " ":
