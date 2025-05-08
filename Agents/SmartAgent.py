@@ -3,28 +3,36 @@ import time
 import os
 
 
-def smart_agent_move(board, display_function, check_winner_function):
+def smart_agent_move(board, display_function, check_winner_function,icon,displayed):
+
+    if icon == '○':
+        opposite_icon ='●'
+    elif icon =='●':
+        opposite_icon = '○'
+
 
     #rule 1 - win if possible
     for col in get_available_moves(board):
         row = find_row_for_col(board, col)
-        board[row][col] = '○'
-        if check_winner_function(board, '○'):
-            os.system('cls||clear')
-            display_function(board)
-            print(f"Smart Agent placed at ({col}).")
+        board[row][col] = icon
+        if check_winner_function(board, icon):
+            if displayed == True:
+                os.system('cls||clear')
+                display_function(board)
+                print(f"Smart Agent placed at ({col}).")
             return
         board[row][col] = ' '
 
     #rule 2 - block if possible
     for col in get_available_moves(board):
         row = find_row_for_col(board, col)
-        board[row][col] = '●'
-        if check_winner_function(board, '●'):
-            board[row][col] = '○'
-            os.system('cls||clear')
-            display_function(board)
-            print(f"Smart Agent placed at ({col}).")
+        board[row][col] = opposite_icon
+        if check_winner_function(board, opposite_icon):
+            board[row][col] = icon
+            if displayed == True:
+                os.system('cls||clear')
+                display_function(board)
+                print(f"Smart Agent placed at ({col}).")
             return
         board[row][col] = ' '
 
@@ -36,10 +44,11 @@ def smart_agent_move(board, display_function, check_winner_function):
             row = range(5,-1,-1)
             for i in row:
                 if board[i][random_cell] == " ":
-                    board[i][random_cell] = '○'
-                    os.system('cls||clear')
-                    display_function(board)
-                    print(f"Random Agent placed at ({random_cell}).")
+                    board[i][random_cell] = icon
+                    if displayed == True:
+                        os.system('cls||clear')
+                        display_function(board)
+                        print(f"Random Agent placed at ({random_cell}).")
                     break
             break
         else:

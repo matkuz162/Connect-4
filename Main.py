@@ -24,10 +24,60 @@ def menu():
     print("[3] View Statistics")
     print("[4] Quit")
 
-def ai_play_game(agent1,agent2):
+
+
+def random_vs_smart():
+    random_wins = 0
+    smart_wins = 0
+    draws = 0
+
     os.system('cls||clear')
-    board = [[" " for _ in range(7)] for _ in range(6)]
-    display(board)
+    print("Loading...")
+
+    for game in range(0, 100):
+        
+        board = [[" " for _ in range(7)] for _ in range(6)]
+
+        while True:
+
+            random_agent_move(board,display,'●',False)
+            if check_winner(board, '●'):
+                random_wins += 1
+                break
+
+            if is_full(board):
+                draws += 1
+                break
+
+
+            smart_agent_move(board, display, check_winner,'○',False)
+
+            if check_winner(board, '○'):
+                smart_wins += 1
+                break
+
+            if is_full(board):
+                draws += 1
+                break
+
+    os.system('cls||clear')
+    print(f"Random Agent won: {random_wins} times.")
+    print(f"Smart Agent won: {smart_wins} times.")
+    print(f"The game ended in a draw: {draws} times.")
+
+
+
+
+def smart_vs_minimax():
+    print("dsf")
+
+def minimax_vs_ml():
+    print("dsf")
+
+
+
+
+
 
     
 
@@ -54,9 +104,9 @@ def manual_play_game(agent):
 
 
         if agent == "Random":
-            random_agent_move(board, display)
+            random_agent_move(board, display,'○',True)
         elif agent =="Smart":
-            smart_agent_move(board, display, check_winner)
+            smart_agent_move(board, display, check_winner,'○',True)
         elif agent =="Mini-Max":
             minimax_agent = AI_minimax_Agent()
             col = minimax_agent.best_move(board, check_winner, is_full)
@@ -115,14 +165,13 @@ def options(option):
             print("[3] Mini-Max Agent VS Machine Learning Agent")
             try:
                 agent_option = int(input("Enter agent option (1-3): "))
-                agents = {
-                    1: ("Random", "Smart"),
-                    2: ("Smart", "Mini-Max"),
-                    3: ("Mini-Max", "ML")
+                matchups = {
+                    1: random_vs_smart,
+                    2: smart_vs_minimax,
+                    3: minimax_vs_ml
                 }
-                if agent_option in agents:
-                    agent1, agent2 = agents[agent_option]
-                    ai_play_game(agent1, agent2)  # New function for AI vs AI
+                if agent_option in matchups:
+                    matchups[agent_option]()  # Call the appropriate function
                     break
                 else:
                     print("Invalid option selected. Please enter a number between 1 and 4.")

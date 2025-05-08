@@ -3,7 +3,7 @@ import time
 import os
 
 
-def random_agent_move(board, display_function):
+def random_agent_move(board, display_function, icon, displayed):
 
   random_cell = random.randint(0,6)
   while True:
@@ -12,10 +12,11 @@ def random_agent_move(board, display_function):
         row = range(5,-1,-1)
         for i in row:
             if board[i][random_cell] == " ":
-                board[i][random_cell] = '○'
-                os.system('cls||clear')
-                display_function(board)
-                print(f"Random Agent placed at ({random_cell}).")
+                board[i][random_cell] = icon
+                if displayed == True:
+                    os.system('cls||clear')
+                    display_function(board)
+                    print(f"Random Agent placed at ({random_cell}).")
                 break
         break
     else:
