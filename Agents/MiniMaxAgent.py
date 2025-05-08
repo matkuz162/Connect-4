@@ -14,7 +14,7 @@ class AI_minimax_Agent:
         return [i for i in range(7) if board[0][i] == " "]
 
     def make_move(self, board, col, player):
-        for row in reversed(range(6)):
+        for row in range(5,-1,-1):
             if board[row][col] == " ":
                 board[row][col] = player
                 return row

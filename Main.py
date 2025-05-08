@@ -28,8 +28,9 @@ def ai_play_game(agent1,agent2):
     os.system('cls||clear')
     board = [[" " for _ in range(7)] for _ in range(6)]
     display(board)
-    print(agent1)
-    print(agent2)
+
+    
+
 
 def manual_play_game(agent):
     os.system('cls||clear')
