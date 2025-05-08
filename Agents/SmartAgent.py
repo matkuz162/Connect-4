@@ -48,7 +48,7 @@ def smart_agent_move(board, display_function, check_winner_function,icon,display
                     if displayed == True:
                         os.system('cls||clear')
                         display_function(board)
-                        print(f"Random Agent placed at ({random_col}).")
+                        print(f"Smart Agent placed at ({random_col}).")
                     return random_col
             break
         else:

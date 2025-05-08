@@ -1,5 +1,4 @@
 import random
-import time
 import os
 
 
@@ -18,6 +17,9 @@ def random_agent_move(board, display_function, icon, displayed):
                     display_function(board)
                     print(f"Random Agent placed at ({random_cell}).")
                 break
+            elif all(board[0][col] != " " for col in range(7)):
+                return
+
         break
     else:
         random_cell = random.randint(0,6)

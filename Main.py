@@ -7,6 +7,7 @@ from Agents.RandomAgent import random_agent_move
 from Agents.SmartAgent import smart_agent_move
 from Agents.MiniMaxAgent import AI_minimax_Agent
 from AIPlay import random_vs_smart, smart_vs_minimax, minimax_vs_ml
+from ManualPlay import manual_play_game, player_move
 
 def title():
     print(" _____                             _       ___ ")
@@ -26,52 +27,6 @@ def menu():
     print("[4] Quit")
 
 
-
-def manual_play_game(agent):
-    os.system('cls||clear')
-    board = [[" " for _ in range(7)] for _ in range(6)]
-    display(board)
-
-    while True:
-
-        player_move(board)
-        if check_winner(board, '●'):
-            print("You win!")
-            break
-
-        if is_full(board):
-            print("The game resulted in a draw")
-            break
-
-        print("AI Move...")
-        time.sleep(2)
-        os.system('cls||clear')
-
-
-        if agent == "Random":
-            random_agent_move(board, display,'○',True)
-        elif agent =="Smart":
-            smart_agent_move(board, display, check_winner,'○',True)
-        elif agent =="Mini-Max":
-            minimax_agent = AI_minimax_Agent()
-            col = minimax_agent.best_move(board, check_winner, is_full)
-            for row in reversed(range(6)):
-                if board[row][col] == " ":
-                    board[row][col] = '○'
-                    break
-            os.system('cls||clear')
-            display(board)
-        elif agent =="ML":
-            print("ml")
-
-
-        if check_winner(board, '○'):
-            print("AI wins!")
-            break
-
-        if is_full(board):
-            print("The game resulted in a draw")
-            break
 
 def options(option):
     if option == 1:
@@ -194,28 +149,7 @@ def col_free(board, column):
 
 
 
-def player_move(board):
-    while True:
-        try:
-            col = int(input("Enter your move (0-6): "))
-            if col < 0 or col > 6:
-                raise ValueError
-            if col_free(board, col):
-                row = range(5,-1,-1)
-                for i in row:
-                    if board[i][col] == " ":
-                        board[i][col] = '●'
-                        break
-                break
-            else:
-                print("Column Full. Try again.")
-        except (ValueError, IndexError):
-            os.system('cls||clear')
-            display(board)
-            print("Invalid input. Enter column numbers between 0 and 6.")
 
-    os.system('cls||clear')
-    display(board)
 
 
 

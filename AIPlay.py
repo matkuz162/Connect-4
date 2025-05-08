@@ -58,7 +58,7 @@ def smart_vs_minimax(display_function, check_winner_function, is_full_function):
 
     for game in range(0, 10):
         
-        board = [[" " for _ in range(7)] for _ in range(4)]
+        board = [[" " for _ in range(7)] for _ in range(6)]
 
         while True:
 
@@ -94,4 +94,4 @@ def smart_vs_minimax(display_function, check_winner_function, is_full_function):
 
 
 def minimax_vs_ml():
-    print("dsf")
+    print("not implemented")
