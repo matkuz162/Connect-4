@@ -7,13 +7,29 @@ from Agents.RandomAgent import random_agent_move
 from Agents.SmartAgent import smart_agent_move
 from Agents.MiniMaxAgent import AI_minimax_Agent
 
-
+def title():
+    print(" _____                             _       ___ ")
+    print("/  __ \                           | |     /   |")
+    print("| /  \/ ___  _ __  _ __   ___  ___| |_   / /| |")
+    print("| |    / _ \| '_ \| '_ \ / _ \/ __| __| / /_| |")
+    print("| \__/\ (_) | | | | | | |  __/ (__| |_  \___  |")
+    print(" \____/\___/|_| |_|_| |_|\___|\___|\__|     |_/\n")
+    
+    
 
 def menu():
+    title()
     print("[1] Play Manually")
     print("[2] AI vs AI")
     print("[3] View Statistics")
     print("[4] Quit")
+
+def ai_play_game(agent1,agent2):
+    os.system('cls||clear')
+    board = [[" " for _ in range(7)] for _ in range(6)]
+    display(board)
+    print(agent1)
+    print(agent2)
 
 def manual_play_game(agent):
     os.system('cls||clear')
@@ -65,7 +81,8 @@ def options(option):
     if option == 1:
         while True:
             os.system('cls||clear')
-            print("Select an agent to play against:")
+            title()
+            print("Choose an agent to play against:")
             print("[1] Random Agent")
             print("[2] Smart Agent")
             print("[3] Mini-Max Agent")
@@ -88,8 +105,30 @@ def options(option):
                 print("Invalid input. Must be a number.")
                 input("Press Enter to try again.")
     elif option == 2:
-        print("AI vs AI selected.")
-        input("Press Enter to return.")
+        while True:
+            os.system('cls||clear')
+            title()
+            print("Choose which agents play against eachother:")
+            print("[1] Random Agent VS Smart Agent")
+            print("[2] Smart Agent VS Mini-Max Agent")
+            print("[3] Mini-Max Agent VS Machine Learning Agent")
+            try:
+                agent_option = int(input("Enter agent option (1-3): "))
+                agents = {
+                    1: ("Random", "Smart"),
+                    2: ("Smart", "Mini-Max"),
+                    3: ("Mini-Max", "ML")
+                }
+                if agent_option in agents:
+                    agent1, agent2 = agents[agent_option]
+                    ai_play_game(agent1, agent2)  # New function for AI vs AI
+                    break
+                else:
+                    print("Invalid option selected. Please enter a number between 1 and 4.")
+                    input("Press Enter to try again.")
+            except ValueError:
+                print("Invalid input. Must be a number.")
+                input("Press Enter to try again.")
     elif option == 3:
         print("Statistics")
         input("Press Enter to return.")
