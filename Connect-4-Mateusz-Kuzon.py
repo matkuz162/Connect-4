@@ -15,6 +15,48 @@ def menu():
     print("[3] View Statistics")
     print("[4] Quit")
 
+def manual_play_game(agent):
+    os.system('cls||clear')
+    board = [[" " for _ in range(7)] for _ in range(6)]
+    display(board)
+
+    while True:
+
+        player_move(board)
+        if check_winner(board, '●'):
+            print("You win!")
+            break
+
+        if is_full(board):
+            print("The game resulted in a draw")
+            break
+
+
+        if agent == "Random":
+            random_agent_move(board, display)
+        elif agent =="Smart":
+            smart_agent_move(board, display, check_winner)
+        elif agent =="Mini-Max":
+            minimax_agent = AI_minimax_Agent()
+            col = minimax_agent.best_move(board)
+            for row in reversed(range(6)):
+                if board[row][col] == " ":
+                    board[row][col] = '○'
+                    break
+            os.system('cls||clear')
+            display(board)
+        elif agent =="ML":
+            print("ml")
+
+
+        if check_winner(board, '○'):
+            print("AI wins!")
+            break
+
+        if is_full(board):
+            print("The game resulted in a draw")
+            break
+
 def options(option):
     if option == 1:
         while True:
@@ -135,45 +177,24 @@ def player_move(board):
 
     os.system('cls||clear')
     display(board)
-    
+
 
 
 startfunction()
 
 
-def manual_play_game(agent):
-    os.system('cls||clear')
-    board = [[" " for _ in range(7)] for _ in range(6)]
-    display(board)
-
-    while True:
-
-        player_move(board)
-        if check_winner(board, '●'):
-            print("You win!")
-            break
-
-        if is_full(board):
-            print("The game resulted in a draw")
-            break
 
 
-        if agent == "Random":
-            random_agent_move(board)
-        elif agent =="Smart":
-            smart_agent_move(board)
-        elif agent =="Mini-Max":
-            print('mm')
-        elif agent =="ML":
-            print("ml")
+
+            
 
 
-        if check_winner(board, '○'):
-            print("AI wins!")
-            break
+    
 
-        if is_full(board):
-            print("The game resulted in a draw")
-            break
+
+
+
+
+
 
 
