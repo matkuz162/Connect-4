@@ -5,6 +5,7 @@ import numpy as np
 
 
 
+
 def menu():
     print("[1] Play Manually")
     print("[2] AI vs AI")
