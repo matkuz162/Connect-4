@@ -34,7 +34,7 @@ def random_vs_smart():
     os.system('cls||clear')
     print("Loading...")
 
-    for game in range(0, 100):
+    for game in range(0, 500):
         
         board = [[" " for _ in range(7)] for _ in range(6)]
 
