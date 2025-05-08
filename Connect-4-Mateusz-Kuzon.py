@@ -3,28 +3,63 @@ import os
 import time
 
 
+
 def menu():
     print("[1] Play Manually")
     print("[2] AI vs AI")
     print("[3] View Statistics")
     print("[4] Quit")
 
-    option = int(input("Enter Option:"))
+def options(option):
+    if option == 1:
+        while True:
+            os.system('cls||clear')
+            print("Select an agent to play against:")
+            print("[1] Random Agent")
+            print("[2] Smart Agent")
+            print("[3] Mini-Max Agent")
+            print("[4] Machine Learning Agent")
+            try:
+                agent_option = int(input("Enter agent option (1–4): "))
+                agents = {
+                    1: "Random",
+                    2: "Smart",
+                    3: "Mini-Max",
+                    4: "ML"
+                }
+                if agent_option in agents:
+                    manual_play_game(agents[agent_option])
+                    break
+                else:
+                    print("Invalid agent selected. Please enter a number between 1 and 4.")
+                    input("Press Enter to try again.")
+            except ValueError:
+                print("Invalid input. Must be a number.")
+                input("Press Enter to try again.")
+    elif option == 2:
+        print("AI vs AI selected.")
+        input("Press Enter to return.")
+    elif option == 3:
+        print("Statistics")
+        input("Press Enter to return.")
+    elif option == 4:
+        print("Quitting...")
+        exit()
 
-    while option !=0:
-        if option ==1:
-            print(1)
-        elif option ==2:
-            print(2)
-        elif option ==3:
-            print(3)
-        else:
-            print("Invalid Input")
-
+def startfunction():
+    while True:
+        os.system('cls||clear')
         menu()
-        option = int(input("Enter Option:"))
+        try:
+            option = int(input("Enter option: "))
+            if option < 1 or option > 4:
+                raise ValueError
+            os.system('cls||clear')
+            options(option)
+            break
+        except ValueError:
+            print("Invalid input. Please enter a number between 1 and 4.")
 
-    exit()
 
 
 def display(board):
@@ -113,7 +148,8 @@ def player_move(board):
 
 
 
-def play_game():
+def manual_play_game(agent):
+    os.system('cls||clear')
     board = [[" " for _ in range(7)] for _ in range(6)]
     display(board)
 
@@ -129,8 +165,16 @@ def play_game():
             break
 
 
-        #random agent
-        random_agent_move(board)
+        if agent == "Random":
+            random_agent_move(board)
+        elif agent =="Smart":
+            print("smart")
+        elif agent =="Mini-Max":
+            print("mm")
+        elif agent =="ML":
+            print("ml")
+
+
         if check_winner(board, '○'):
             print("AI wins!")
             break
@@ -139,11 +183,4 @@ def play_game():
             print("The game resulted in a draw")
             break
 
-
-
-
-
-
-
-
-menu()
+startfunction()
