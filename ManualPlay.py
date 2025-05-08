@@ -1,4 +1,5 @@
 import os
+import time
 
 
 from Agents.RandomAgent import random_agent_move
@@ -25,6 +26,7 @@ def manual_play_game(display_function, check_winner_function, is_full_function, 
         if is_full_function(board):
             print("It's a draw.")
             return
+        
 
         # AI move
         if selected_agent == "Random":
@@ -33,15 +35,18 @@ def manual_play_game(display_function, check_winner_function, is_full_function, 
         elif selected_agent == "Smart":
             smart_agent_move(board, display_function, check_winner_function, '○', displayed=True)
 
-        elif selected_agent == "MiniMax":
+        elif selected_agent =="Mini-Max":
+            minimax_agent = AI_minimax_Agent()
             col = minimax_agent.best_move(board, check_winner_function, is_full_function)
-            for row in range(5, -1, -1):
+            for row in reversed(range(6)):
                 if board[row][col] == " ":
                     board[row][col] = '○'
+                    print("Mini-Max Move...")
+                    time.sleep(1)
+                    os.system('cls||clear')
                     break
             os.system('cls||clear')
             display_function(board)
-            print(f"MiniMax Agent placed at ({col}).")
 
         elif selected_agent == "ML":
             print("ML agent not implemented yet.")

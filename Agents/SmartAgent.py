@@ -16,10 +16,12 @@ def smart_agent_move(board, display_function, check_winner_function,icon,display
         row = find_row_for_col(board, col)
         board[row][col] = icon
         if check_winner_function(board, icon):
-            if displayed == True:
+            if displayed:
+                print("Smart Move...")
+                time.sleep(1)
                 os.system('cls||clear')
                 display_function(board)
-                print(f"Smart Agent placed at ({col}).")
+                print(f"Smart Agent placed at ({col})")
             return col
         board[row][col] = ' '
 
@@ -29,10 +31,12 @@ def smart_agent_move(board, display_function, check_winner_function,icon,display
         board[row][col] = opposite_icon
         if check_winner_function(board, opposite_icon):
             board[row][col] = icon
-            if displayed == True:
+            if displayed:
+                print("Smart Move...")
+                time.sleep(1)
                 os.system('cls||clear')
                 display_function(board)
-                print(f"Smart Agent placed at ({col}).")
+                print(f"Smart Agent placed at ({col})")
             return col
         board[row][col] = ' '
 
@@ -46,6 +50,8 @@ def smart_agent_move(board, display_function, check_winner_function,icon,display
                 if board[i][random_col] == " ":
                     board[i][random_col] = icon
                     if displayed == True:
+                        print("Smart Move...")
+                        time.sleep(1)
                         os.system('cls||clear')
                         display_function(board)
                         print(f"Smart Agent placed at ({random_col}).")

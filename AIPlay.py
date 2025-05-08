@@ -21,7 +21,7 @@ def random_vs_smart(display_function, check_winner_function, is_full_function):
 
         while True:
 
-            random_agent_move(board,display_function,'●',False)
+            random_agent_move(board,display_function,'●',displayed=False)
             if check_winner_function(board, '●'):
                 random_wins += 1
                 break
@@ -31,7 +31,7 @@ def random_vs_smart(display_function, check_winner_function, is_full_function):
                 break
 
 
-            smart_agent_move(board, display_function, check_winner_function,'○',False)
+            smart_agent_move(board, display_function, check_winner_function,'○',displayed=False)
 
             if check_winner_function(board, '○'):
                 smart_wins += 1

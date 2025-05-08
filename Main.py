@@ -3,11 +3,8 @@ import os
 import time
 import numpy as np
 
-from Agents.RandomAgent import random_agent_move
-from Agents.SmartAgent import smart_agent_move
-from Agents.MiniMaxAgent import AI_minimax_Agent
 from AIPlay import random_vs_smart, smart_vs_minimax, minimax_vs_ml
-from ManualPlay import manual_play_game, player_move
+from ManualPlay import manual_play_game
 
 def title():
     print(" _____                             _       ___ ")
@@ -47,7 +44,7 @@ def options(option):
                     4: "ML"
                 }
                 if agent_option in agents:
-                    manual_play_game(agents[agent_option])
+                    manual_play_game(display,check_winner,is_full,agents[agent_option])
                     break
                 else:
                     print("Invalid agent selected. Please enter a number between 1 and 4.")

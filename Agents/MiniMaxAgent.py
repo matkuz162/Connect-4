@@ -18,6 +18,7 @@ class AI_minimax_Agent:
             if board[row][col] == " ":
                 board[row][col] = player
                 return row
+        
 
     def minimax(self, board, depth, alpha, beta, is_maximizing, check_winner_function, is_full_function):
         if check_winner_function(board, self.ai_player):
