@@ -1,6 +1,7 @@
 import random
 import os
 import time
+
 import numpy as np
 
 
@@ -22,7 +23,7 @@ def options(option):
             print("[3] Mini-Max Agent")
             print("[4] Machine Learning Agent")
             try:
-                agent_option = int(input("Enter agent option (1–4): "))
+                agent_option = int(input("Enter agent option (1-4): "))
                 agents = {
                     1: "Random",
                     2: "Smart",
