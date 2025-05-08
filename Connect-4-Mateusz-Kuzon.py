@@ -113,6 +113,11 @@ def random_agent_move(board):
     else:
         random_cell = random.randint(0,6)
 
+def smart_agent_move(board):
+    print("AI Move...")
+    time.sleep(2)
+
+
 def is_full(board):
     return all(board[row][col] != " " for row in range(6) for col in range(7))
 
@@ -168,7 +173,7 @@ def manual_play_game(agent):
         if agent == "Random":
             random_agent_move(board)
         elif agent =="Smart":
-            print("smart")
+            smart_agent_move(board)
         elif agent =="Mini-Max":
             print("mm")
         elif agent =="ML":
