@@ -1,7 +1,6 @@
 import os
 import time
 
-
 from Agents.RandomAgent import random_agent_move
 from Agents.SmartAgent import smart_agent_move
 from Agents.MiniMaxAgent import Minimax_Agent
@@ -9,8 +8,7 @@ from Agents.MachineLearningAgent import MachineLearningAgent
 
 ml_agent = MachineLearningAgent()
 
-
-def manual_play_game(display_function, check_winner_bool_only_function, is_full_function, selected_agent):
+def manual_play_game(display_function, check_winner, is_full_function, selected_agent):
     board = [[" " for _ in range(7)] for _ in range(6)]
 
     os.system('cls||clear')
@@ -24,25 +22,25 @@ def manual_play_game(display_function, check_winner_bool_only_function, is_full_
     while True:
         # Player move
         player_move(board, display_function)
-        if check_winner_bool_only_function(board, '●'):
+        won = check_winner(board, '●')  # <- fixed: removed unpacking
+        if won:
             print("You win!")
             return
         if is_full_function(board):
             print("It's a draw.")
             return
-        
 
         # AI move
         if selected_agent == "Random":
             random_agent_move(board, display_function, '○', displayed=True)
 
         elif selected_agent == "Smart":
-            smart_agent_move(board, display_function, check_winner_bool_only_function, '○', displayed=True)
+            smart_agent_move(board, display_function, lambda b, p: check_winner(b, p), '○', displayed=True)
 
-        elif selected_agent =="Mini-Max":
+        elif selected_agent == "Mini-Max":
             minimax_agent = Minimax_Agent()
-            col = minimax_agent.best_move(board, check_winner_bool_only_function, is_full_function)
-            for row in range(5,-1,-1):
+            col = minimax_agent.best_move(board, check_winner, is_full_function)
+            for row in range(5, -1, -1):
                 if board[row][col] == " ":
                     board[row][col] = '○'
                     print("Mini-Max Move...")
@@ -54,7 +52,7 @@ def manual_play_game(display_function, check_winner_bool_only_function, is_full_
 
         elif selected_agent == "ML":
             col = ml_agent.choose_move(board)
-            for row in range(5,-1,-1):
+            for row in range(5, -1, -1):
                 if board[row][col] == " ":
                     board[row][col] = '○'
                     print("Machine Learning Move...")
@@ -63,14 +61,14 @@ def manual_play_game(display_function, check_winner_bool_only_function, is_full_
                     display_function(board)
                     break
 
-
-        if check_winner_bool_only_function(board, '○'):
+        won = check_winner(board, '○')  # <- fixed: removed unpacking
+        if won:
             print("AI wins!")
             return
         if is_full_function(board):
             print("It's a draw.")
             return
-        
+
 
 def player_move(board, display_function):
     while True:
