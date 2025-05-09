@@ -3,7 +3,7 @@ import os
 import time
 import numpy as np
 
-from AIPlay import random_vs_smart, smart_vs_minimax, minimax_vs_ml
+from AIPlay import random_vs_smart, smart_vs_minimax, ml_vs_minimax
 from ManualPlay import manual_play_game
 
 def title():
@@ -66,7 +66,7 @@ def options(option):
                 
                     1: random_vs_smart,
                     2: smart_vs_minimax,
-                    3: minimax_vs_ml
+                    3: ml_vs_minimax,
                 }
                 if agent_option in matchups:
                     matchups[agent_option](display,check_winner,is_full)  # Call the appropriate function

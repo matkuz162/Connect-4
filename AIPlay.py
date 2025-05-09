@@ -56,7 +56,7 @@ def smart_vs_minimax(display_function, check_winner_function, is_full_function):
     os.system('cls||clear')
     print("Loading...")
 
-    for game in range(0, 5):
+    for game in range(0, 20):
         
         board = [[" " for _ in range(7)] for _ in range(6)]
 
@@ -72,7 +72,7 @@ def smart_vs_minimax(display_function, check_winner_function, is_full_function):
                 break
 
 
-            minimax_agent = AI_minimax_Agent()
+            minimax_agent = AI_minimax_Agent(depth=4)
             col = minimax_agent.best_move(board, check_winner_function, is_full_function)
             for row in range(5,-1,-1):
                 if board[row][col] == " ":
@@ -93,5 +93,5 @@ def smart_vs_minimax(display_function, check_winner_function, is_full_function):
     print(f"The game ended in a draw: {draws} times.")
 
 
-def minimax_vs_ml():
+def ml_vs_minimax():
     print("not implemented")
