@@ -2,6 +2,9 @@ import random
 import os
 import time
 import numpy as np
+import seaborn as sns
+import matplotlib as plt
+import pandas as pd
 
 from AIPlay import random_vs_smart, smart_vs_minimax, ml_vs_minimax
 from ManualPlay import manual_play_game
