@@ -250,7 +250,6 @@ def smart_vs_minimax(display_function, check_winner_function, is_full_function):
     plt.show()
 
 
-
 def ml_vs_minimax(display_function, check_winner_function, is_full_function):
     import os, time, tracemalloc, csv
     import pandas as pd
