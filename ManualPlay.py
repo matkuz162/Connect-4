@@ -8,8 +8,12 @@ from Agents.MachineLearningAgent import MachineLearningAgent
 
 ml_agent = MachineLearningAgent()
 
-def manual_play_game(display_function, check_winner, is_full_function, selected_agent):
+def manual_play_game(display_function, check_winner_function, is_full_function, selected_agent):
     board = [[" " for _ in range(7)] for _ in range(6)]
+
+    def check_win_only(board, player):
+        result = check_winner_function(board, player)
+        return result if isinstance(result, bool) else result[0]
 
     os.system('cls||clear')
     print("Game Start!")
@@ -22,7 +26,7 @@ def manual_play_game(display_function, check_winner, is_full_function, selected_
     while True:
         # Player move
         player_move(board, display_function)
-        won = check_winner(board, '●')  # <- fixed: removed unpacking
+        won = check_win_only(board, '●')
         if won:
             print("You win!")
             return
@@ -35,11 +39,11 @@ def manual_play_game(display_function, check_winner, is_full_function, selected_
             random_agent_move(board, display_function, '○', displayed=True)
 
         elif selected_agent == "Smart":
-            smart_agent_move(board, display_function, lambda b, p: check_winner(b, p), '○', displayed=True)
+            smart_agent_move(board, display_function, lambda b, p: check_winner_function(b, p), '○', displayed=True)
 
         elif selected_agent == "Mini-Max":
             minimax_agent = Minimax_Agent()
-            col = minimax_agent.best_move(board, check_winner, is_full_function)
+            col = minimax_agent.best_move(board, check_winner_function, is_full_function)
             for row in range(5, -1, -1):
                 if board[row][col] == " ":
                     board[row][col] = '○'
@@ -61,7 +65,7 @@ def manual_play_game(display_function, check_winner, is_full_function, selected_
                     display_function(board)
                     break
 
-        won = check_winner(board, '○')  # <- fixed: removed unpacking
+        won = check_win_only(board, '○')
         if won:
             print("AI wins!")
             return

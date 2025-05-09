@@ -45,7 +45,9 @@ def options(option):
                     4: "ML"
                 }
                 if agent_option in agents:
-                    manual_play_game(display,check_winner_bool_only,is_full,agents[agent_option])
+                    agent_name = agents[agent_option]
+                    winner_function = check_winner if agent_name == "Mini-Max" else check_winner_bool_only
+                    manual_play_game(display, winner_function, is_full, agent_name)
                     break
                 else:
                     print("Invalid agent selected. Please enter a number between 1 and 4.")
