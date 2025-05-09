@@ -101,6 +101,7 @@ def random_vs_smart(display_function, check_winner_function, is_full_function):
     plt.grid(True)
     plt.show()
 
+    #over win type
     win_type_counts = df[df["Win Type"] != "None"]["Win Type"].value_counts()
     sns.barplot(x=win_type_counts.index, y=win_type_counts.values, palette="muted")
     plt.title("Overall Win Type Distribution")
