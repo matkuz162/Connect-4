@@ -20,8 +20,7 @@ def menu():
     title()
     print("[1] Play Manually")
     print("[2] AI vs AI")
-    print("[3] View Statistics")
-    print("[4] Quit")
+    print("[3] Quit")
 
 
 
@@ -78,9 +77,6 @@ def options(option):
                 print("Invalid input. Must be a number.")
                 input("Press Enter to try again.")
     elif option == 3:
-        print("Statistics")
-        input("Press Enter to return.")
-    elif option == 4:
         print("Quitting...")
         exit()
 

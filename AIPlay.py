@@ -8,6 +8,15 @@ from Agents.SmartAgent import smart_agent_move
 from Agents.MiniMaxAgent import Minimax_Agent
 from Agents.MachineLearningAgent import MachineLearningAgent
 
+# win rate draw rate loss rate
+#search performace metrics
+#efficiency metrics execution time
+#heuristic evaluation quality + counterplay ability
+# game length, winning patterns - frequency of horizontal, vertical or diagonal wins
+# robustness - performance against different agents
+# memory usage
+
+
 
 
 def random_vs_smart(display_function, check_winner_function, is_full_function):
@@ -106,7 +115,7 @@ def ml_vs_minimax(display_function, check_winner_function, is_full_function):
     ml_agent = MachineLearningAgent(player_symbol='●')
     minimax_agent = Minimax_Agent(depth=4)
 
-    for game in range(0, 10):
+    for game in range(0, 500):
         
         board = [[" " for _ in range(7)] for _ in range(6)]
 
