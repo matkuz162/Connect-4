@@ -15,31 +15,42 @@ from Agents.MachineLearningAgent import MachineLearningAgent
 
 
 
-
+#first ai matchup
 def random_vs_smart(display_function, check_winner_function, is_full_function):
+    #runs 500 times since its a fast one
     runs = 500
     os.system('cls||clear')
     print("Loading...")
 
+    #opens and overwrites into csv file
     with open("random_vs_smart_per_game.csv", mode="w", newline="") as file:
         writer = csv.writer(file)
+        #writes heading
         writer.writerow(["Game", "Winner", "Execution Time (s)", "Memory Usage (KB)", "Win Type"])
+
 
         for game_num in range(0, runs):
             board = [[" " for _ in range(7)] for _ in range(6)]
 
+            #tracks memory
             tracemalloc.start()
+            #tracks time
             start_time = time.time()
+            #tracks who won
             winner = "Draw"
             win_type = "None"
 
             while True:
+                #random agent moves
                 random_agent_move(board, display_function, '●', displayed=False)
                 won, win_type_candidate = check_winner_function(board, '●')
+                #checks if won
                 if won:
                     winner = "Random"
                     win_type = win_type_candidate
                     break
+                
+                #checks if draw
                 if is_full_function(board):
                     break
 
@@ -52,29 +63,37 @@ def random_vs_smart(display_function, check_winner_function, is_full_function):
                 if is_full_function(board):
                     break
 
+            #ends timer
             end_time = time.time()
+            #gets memory
             current, peak = tracemalloc.get_traced_memory()
             tracemalloc.stop()
 
+            #how long it took to run and memory used
             execution_time = round(end_time - start_time, 4)
             memory_kb = round(peak / 1024, 2)
 
+            #writes into csv the statistics of the game after every game
             writer.writerow([game_num, winner, execution_time, memory_kb, win_type])
 
     os.system('cls||clear')
 
+    #reads from the csv
     df = pd.read_csv("random_vs_smart_per_game.csv")
 
+    #plots winrate
     sns.countplot(data=df, x="Winner", palette="pastel")
     plt.title("Game Outcomes: Random vs Smart")
     plt.show()
 
+    #plots time taken
     sns.lineplot(data=df, x="Game", y="Execution Time (s)", label="Time per Game")
     plt.title("Execution Time per Game")
     plt.ylabel("Time (s)")
     plt.grid(True)
     plt.show()
 
+    #plots memory usage
     sns.lineplot(data=df, x="Game", y="Memory Usage (KB)", color="purple")
     plt.title("Memory Usage per Game: Random vs Smart")
     plt.ylabel("Memory (KB)")
@@ -82,6 +101,7 @@ def random_vs_smart(display_function, check_winner_function, is_full_function):
     plt.grid(True)
     plt.show()
 
+    #determines what type of win
     df_wins = df[df["Winner"] != "Draw"]
     random_wins_df = df_wins[df_wins["Winner"] == "Random"]
     smart_wins_df = df_wins[df_wins["Winner"] == "Smart"]
@@ -89,6 +109,7 @@ def random_vs_smart(display_function, check_winner_function, is_full_function):
     random_win_types = random_wins_df["Win Type"].value_counts()
     smart_win_types = smart_wins_df["Win Type"].value_counts()
 
+    #plors win type for random
     sns.barplot(x=random_win_types.index, y=random_win_types.values, palette="Blues")
     plt.title("Win Type Distribution - Random Agent")
     plt.ylabel("Number of Wins")
@@ -96,6 +117,7 @@ def random_vs_smart(display_function, check_winner_function, is_full_function):
     plt.grid(axis="y")
     plt.show()
 
+    #plots win type for rule based
     sns.barplot(x=smart_win_types.index, y=smart_win_types.values, palette="Greens")
     plt.title("Win Type Distribution - Smart Agent")
     plt.ylabel("Number of Wins")
@@ -110,6 +132,7 @@ def smart_vs_minimax(display_function, check_winner_function, is_full_function):
     import seaborn as sns
     import matplotlib.pyplot as plt
 
+    #only 100 runs because it takes a while to load only 100 on my laptop
     runs = 100
     os.system('cls||clear')
     print("Loading...")
@@ -225,6 +248,7 @@ def ml_vs_minimax(display_function, check_winner_function, is_full_function):
     import seaborn as sns
     import matplotlib.pyplot as plt
 
+    #only 100 runs because it takes a while to load only 100 on my laptop
     runs = 100
     os.system('cls||clear')
     print("Loading...")
