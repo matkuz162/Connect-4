@@ -1,41 +1,45 @@
-import joblib
 import numpy as np
-import os
-import pandas as pd
+import joblib
+import random
 
-class MLAgent:
-    def __init__(self, model_path="knn_model.pkl"):
+class MachineLearningAgent:
+    def __init__(self, model_path="machine_learning_model.joblib", encoder_path="machine_learning_label_encoder_y.joblib", player_symbol='○'):
         self.model = joblib.load(model_path)
-        self.column_order = ['col_' + str(i) for i in range(42)]  # 6x7 board
-        self.mapping = {' ': 0, 'x': 1, 'o': 2}  # match the training encoding
-
-    def encode_board(self, board, player='x'):
-        # Flatten and encode the board
-        flat = [self.mapping.get(cell, 0) for row in board for cell in row]
-        return pd.DataFrame([flat], columns=self.column_order)
+        self.encoder = joblib.load(encoder_path)
+        self.player_symbol = player_symbol
+        self.opponent_symbol = '●' if player_symbol == '○' else '○'
+        self.mapping = {' ': 0, self.player_symbol: 1, self.opponent_symbol: -1}
 
     def get_valid_columns(self, board):
-        return [i for i in range(7) if board[0][i] == " "]
+        return [col for col in range(7) if board[0][col] == " "]
 
-    def make_temp_move(self, board, col, player):
-        temp = [row.copy() for row in board]
-        for row in reversed(range(6)):
-            if temp[row][col] == " ":
-                temp[row][col] = player
+    def simulate_move(self, board, col, player):
+        temp_board = [row[:] for row in board]
+        for row in range(5,-1,-1):
+            if temp_board[row][col] == " ":
+                temp_board[row][col] = player
                 break
-        return temp
+        return temp_board
 
-    def best_move(self, board, player_token='○'):
-        possible_moves = self.get_valid_columns(board)
-        move_scores = []
+    def board_to_features(self, board):
+        flat = [self.mapping[cell] for row in board for cell in row]
+        return np.array(flat).reshape(1, -1)
 
-        for col in possible_moves:
-            temp_board = self.make_temp_move(board, col, 'x')  # ML model is trained with 'x' as first player
-            input_df = self.encode_board(temp_board)
-            prediction = self.model.predict(input_df)[0]  # 'win', 'loss', 'draw'
-            score = {'win': 2, 'draw': 1, 'loss': 0}.get(prediction, 0)
-            move_scores.append((col, score))
+    def choose_move(self, board):
+        valid_moves = self.get_valid_columns(board)
+        best_move = None
+        best_score = -1
 
-        # Pick the move with highest score
-        best = max(move_scores, key=lambda x: x[1])
-        return best[0]
+        for col in valid_moves:
+            simulated = self.simulate_move(board, col, self.player_symbol)
+            features = self.board_to_features(simulated)
+            prediction = self.model.predict(features)[0]
+            outcome_label = self.encoder.inverse_transform([prediction])[0]
+
+            score = {"win": 2, "draw": 1, "loss": 0}.get(outcome_label, 0)
+
+            if score > best_score:
+                best_score = score
+                best_move = col
+
+        return best_move if best_move is not None else random.choice(valid_moves)

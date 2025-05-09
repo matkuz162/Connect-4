@@ -5,7 +5,7 @@ import numpy as np
 
 from Agents.RandomAgent import random_agent_move
 from Agents.SmartAgent import smart_agent_move
-from Agents.MiniMaxAgent import AI_minimax_Agent
+from Agents.MiniMaxAgent import Minimax_Agent
 
 def random_vs_smart(display_function, check_winner_function, is_full_function):
     random_wins = 0
@@ -72,7 +72,7 @@ def smart_vs_minimax(display_function, check_winner_function, is_full_function):
                 break
 
 
-            minimax_agent = AI_minimax_Agent(depth=4)
+            minimax_agent = Minimax_Agent(depth=4)
             col = minimax_agent.best_move(board, check_winner_function, is_full_function)
             for row in range(5,-1,-1):
                 if board[row][col] == " ":

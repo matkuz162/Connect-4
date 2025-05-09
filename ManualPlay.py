@@ -4,7 +4,11 @@ import time
 
 from Agents.RandomAgent import random_agent_move
 from Agents.SmartAgent import smart_agent_move
-from Agents.MiniMaxAgent import AI_minimax_Agent
+from Agents.MiniMaxAgent import Minimax_Agent
+from Agents.MachineLearningAgent import MachineLearningAgent
+
+ml_agent = MachineLearningAgent()
+
 
 def manual_play_game(display_function, check_winner_function, is_full_function, selected_agent):
     board = [[" " for _ in range(7)] for _ in range(6)]
@@ -15,7 +19,7 @@ def manual_play_game(display_function, check_winner_function, is_full_function, 
 
     minimax_agent = None
     if selected_agent == "MiniMax":
-        minimax_agent = AI_minimax_Agent()
+        minimax_agent = Minimax_Agent()
 
     while True:
         # Player move
@@ -36,9 +40,9 @@ def manual_play_game(display_function, check_winner_function, is_full_function, 
             smart_agent_move(board, display_function, check_winner_function, '○', displayed=True)
 
         elif selected_agent =="Mini-Max":
-            minimax_agent = AI_minimax_Agent()
+            minimax_agent = Minimax_Agent()
             col = minimax_agent.best_move(board, check_winner_function, is_full_function)
-            for row in reversed(range(6)):
+            for row in range(5,-1,-1):
                 if board[row][col] == " ":
                     board[row][col] = '○'
                     print("Mini-Max Move...")
@@ -49,8 +53,11 @@ def manual_play_game(display_function, check_winner_function, is_full_function, 
             display_function(board)
 
         elif selected_agent == "ML":
-            print("ML agent not implemented yet.")
-            return
+            col = ml_agent.choose_move(board)
+            for row in reversed(range(6)):
+                if board[row][col] == " ":
+                    board[row][col] = '○'
+                    break
 
         if check_winner_function(board, '○'):
             print("AI wins!")
