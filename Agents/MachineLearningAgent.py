@@ -1,6 +1,7 @@
 import numpy as np
 import joblib
 import random
+import pandas as pd
 
 class MachineLearningAgent:
     def __init__(self, model_path="machine_learning_model.joblib", encoder_path="machine_learning_label_encoder_y.joblib", player_symbol='○'):
@@ -15,7 +16,7 @@ class MachineLearningAgent:
 
     def simulate_move(self, board, col, player):
         temp_board = [row[:] for row in board]
-        for row in range(5,-1,-1):
+        for row in range(5, -1, -1):
             if temp_board[row][col] == " ":
                 temp_board[row][col] = player
                 break
@@ -23,7 +24,8 @@ class MachineLearningAgent:
 
     def board_to_features(self, board):
         flat = [self.mapping[cell] for row in board for cell in row]
-        return np.array(flat).reshape(1, -1)
+        df = pd.DataFrame([flat], columns=[f"pos_{i}" for i in range(42)])
+        return df
 
     def choose_move(self, board):
         valid_moves = self.get_valid_columns(board)

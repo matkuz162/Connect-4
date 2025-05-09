@@ -54,10 +54,15 @@ def manual_play_game(display_function, check_winner_function, is_full_function, 
 
         elif selected_agent == "ML":
             col = ml_agent.choose_move(board)
-            for row in reversed(range(6)):
+            for row in range(5,-1,-1):
                 if board[row][col] == " ":
                     board[row][col] = '○'
+                    print("Machine Learning Move...")
+                    time.sleep(1)
+                    os.system('cls||clear')
+                    display_function(board)
                     break
+
 
         if check_winner_function(board, '○'):
             print("AI wins!")
