@@ -69,7 +69,7 @@ def options(option):
                     3: ml_vs_minimax,
                 }
                 if agent_option in matchups:
-                    matchups[agent_option](display,check_winner,is_full)  # Call the appropriate function
+                    matchups[agent_option](display,check_winner,is_full)
                     break
                 else:
                     print("Invalid option selected. Please enter a number between 1 and 4.")
