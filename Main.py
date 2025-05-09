@@ -46,7 +46,7 @@ def options(option):
                     4: "ML"
                 }
                 if agent_option in agents:
-                    manual_play_game(display,check_winner,is_full,agents[agent_option])
+                    manual_play_game(display,check_winner_bool_only,is_full,agents[agent_option])
                     break
                 else:
                     print("Invalid agent selected. Please enter a number between 1 and 4.")
@@ -111,24 +111,28 @@ def check_winner(board, move):
     for row in range(6):
         for col in range(4):
             if all(board[row][col + i] == move for i in range(4)):
-                return True
-
+                return True, "Horizontal"
+            
     for col in range(7):
         for row in range(3):
             if all(board[row + i][col] == move for i in range(4)):
-                return True
-
+                return True, "Vertical"
+            
     for row in range(3):
         for col in range(4):
             if all(board[row + i][col + i] == move for i in range(4)):
-                return True
-
+                return True, "Diagonal"
+            
     for row in range(3, 6):
         for col in range(4):
             if all(board[row - i][col + i] == move for i in range(4)):
-                return True
+                return True, "Diagonal"
+    return False, None
 
-    return False
+def check_winner_bool_only(board, move):
+    result, _ = check_winner(board, move)
+    return result
+
         
 
 

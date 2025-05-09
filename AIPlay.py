@@ -7,200 +7,331 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 import csv
+import tracemalloc
 
 from Agents.RandomAgent import random_agent_move
 from Agents.SmartAgent import smart_agent_move
 from Agents.MiniMaxAgent import Minimax_Agent
 from Agents.MachineLearningAgent import MachineLearningAgent
 
-# win rate draw rate loss rate
-#search performace metrics
-#efficiency metrics execution time
-#heuristic evaluation quality + counterplay ability
-# game length, winning patterns - frequency of horizontal, vertical or diagonal wins
-# robustness - performance against different agents
-# memory usage
 
-
-# Game-Level Metrics ( Winning Patterns: frequency of horizontal, vertical, diagonal winning strategies
-# Resource Utilization Metrics (i.e., memory usage)
 
 
 def random_vs_smart(display_function, check_winner_function, is_full_function):
-    random_wins = 0
-    smart_wins = 0
-    draws = 0
-
     runs = 500
-
-    game_times = []
-
     os.system('cls||clear')
     print("Loading...")
 
-    for game in range(0, runs):
-        
-        board = [[" " for _ in range(7)] for _ in range(6)]
+    with open("random_vs_smart_per_game.csv", mode="w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(["Game", "Winner", "Execution Time (s)", "Memory Usage (KB)", "Win Type"])
 
-        individual_game = time.time()
+        for game_num in range(0, runs):
+            board = [[" " for _ in range(7)] for _ in range(6)]
 
-        while True:
+            tracemalloc.start()
+            start_time = time.time()
+            winner = "Draw"
+            win_type = "None"
 
-            random_agent_move(board,display_function,'●',displayed=False)
-            if check_winner_function(board, '●'):
-                random_wins += 1
-                break
+            while True:
+                random_agent_move(board, display_function, '●', displayed=False)
+                won, win_type_candidate = check_winner_function(board, '●')
+                if won:
+                    winner = "Random"
+                    win_type = win_type_candidate
+                    break
+                if is_full_function(board):
+                    break
 
-            if is_full_function(board):
-                draws += 1
-                break
+                smart_agent_move(board, display_function, check_winner_function, '○', displayed=False)
+                won, win_type_candidate = check_winner_function(board, '○')
+                if won:
+                    winner = "Smart"
+                    win_type = win_type_candidate
+                    break
+                if is_full_function(board):
+                    break
 
+            end_time = time.time()
+            current, peak = tracemalloc.get_traced_memory()
+            tracemalloc.stop()
 
-            smart_agent_move(board, display_function, check_winner_function,'○',displayed=False)
+            execution_time = round(end_time - start_time, 4)
+            memory_kb = round(peak / 1024, 2)
 
-            if check_winner_function(board, '○'):
-                smart_wins += 1
-                break
-
-            if is_full_function(board):
-                draws += 1
-                break
-
-        end_individual_game = time.time()
-        game_times.append(end_individual_game - individual_game)
-
-    total_time = sum(game_times)
-    average_time = total_time / runs
-    random_winrate = round((random_wins/runs) * 100, 1)
-    smart_winrate = round((smart_wins/runs) * 100, 1)
-    drawrate = round((draws/runs) * 100, 1)
-
+            writer.writerow([game_num, winner, execution_time, memory_kb, win_type])
 
     os.system('cls||clear')
 
-    print(f"Random Agent won: {random_wins} times.")
-    print(f"Smart Agent won: {smart_wins} times.")
-    print(f"The game ended in a draw: {draws} times.")
+    df = pd.read_csv("random_vs_smart_per_game.csv")
 
-    random_winrate = round((random_wins/(runs))*100,1)
-    smart_winrate = round((smart_wins/(runs))*100,1)
-    drawrate = round((draws/runs)*100,1)
+    sns.countplot(data=df, x="Winner", palette="pastel")
+    plt.title("Game Outcomes: Random vs Smart")
+    plt.show()
 
-    print(f"\nRandom Agent winrate: {random_winrate}%")
-    print(f"Smart Agent winrate: {smart_winrate}%")
-    print(f"Drawrate: {drawrate}%")
+    sns.lineplot(data=df, x="Game", y="Execution Time (s)", label="Time per Game")
+    plt.title("Execution Time per Game")
+    plt.ylabel("Time (s)")
+    plt.grid(True)
+    plt.show()
 
-    if random_winrate > smart_winrate:
-        print("\nRandom Agent Performs Better.")
-    elif smart_winrate > random_winrate:
-        print("\nSmart Agents Performs Better.")
-    elif drawrate > random_winrate and drawrate > smart_winrate:
-        print("\nThe Agents are evenly matched.")
+    sns.lineplot(data=df, x="Game", y="Memory Usage (KB)", color="purple")
+    plt.title("Memory Usage per Game: Random vs Smart")
+    plt.ylabel("Memory (KB)")
+    plt.xlabel("Game Number")
+    plt.grid(True)
+    plt.show()
 
-    print(f"\nTotal execution time for {runs} games: {total_time:.2f} seconds")
-    print(f"Average time per game: {average_time:.4f} seconds")
+    df_wins = df[df["Winner"] != "Draw"]
+    random_wins_df = df_wins[df_wins["Winner"] == "Random"]
+    smart_wins_df = df_wins[df_wins["Winner"] == "Smart"]
 
+    random_win_types = random_wins_df["Win Type"].value_counts()
+    smart_win_types = smart_wins_df["Win Type"].value_counts()
 
+    sns.barplot(x=random_win_types.index, y=random_win_types.values, palette="Blues")
+    plt.title("Win Type Distribution - Random Agent")
+    plt.ylabel("Number of Wins")
+    plt.xlabel("Win Type")
+    plt.grid(axis="y")
+    plt.show()
 
-
-
-
-
-
+    sns.barplot(x=smart_win_types.index, y=smart_win_types.values, palette="Greens")
+    plt.title("Win Type Distribution - Smart Agent")
+    plt.ylabel("Number of Wins")
+    plt.xlabel("Win Type")
+    plt.grid(axis="y")
+    plt.show()
 
 
 def smart_vs_minimax(display_function, check_winner_function, is_full_function):
-    smart_wins = 0
-    minimax_wins = 0
-    draws = 0
+    import os, time, tracemalloc, csv
+    import pandas as pd
+    import seaborn as sns
+    import matplotlib.pyplot as plt
+
     runs = 500
     os.system('cls||clear')
     print("Loading...")
 
-    for game in range(0, runs):
-        
-        board = [[" " for _ in range(7)] for _ in range(6)]
+    with open("smart_vs_minimax_per_game.csv", mode="w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(["Game", "Winner", "Execution Time (s)", "Memory Usage (KB)", "Win Type"])
 
-        while True:
+        for game_num in range(0, runs):
+            board = [[" " for _ in range(7)] for _ in range(6)]
+            tracemalloc.start()
+            start_time = time.time()
 
-            col = smart_agent_move(board, display_function, check_winner_function, '●', displayed=False)
-            if check_winner_function(board, '●'):
-                smart_wins += 1
-                break
+            winner = "Draw"
+            win_type = "None"
 
-            if is_full_function(board):
-                draws += 1
-                break
-
-
-            minimax_agent = Minimax_Agent(depth=4)
-            col = minimax_agent.best_move(board, check_winner_function, is_full_function)
-            for row in range(5,-1,-1):
-                if board[row][col] == " ":
-                    board[row][col] = '○'
+            while True:
+                # Smart Agent move
+                col = smart_agent_move(board, display_function, check_winner_function, '●', displayed=False)
+                won, win_type_candidate = check_winner_function(board, '●')
+                if won:
+                    winner = "Smart"
+                    win_type = win_type_candidate
+                    break
+                if is_full_function(board):
                     break
 
-            if check_winner_function(board, '○'):
-                minimax_wins += 1
-                break
+                # MiniMax Agent move
+                minimax_agent = Minimax_Agent(depth=4)
+                col = minimax_agent.best_move(board, check_winner_function, is_full_function)
+                for row in range(5, -1, -1):
+                    if board[row][col] == " ":
+                        board[row][col] = '○'
+                        break
+                won, win_type_candidate = check_winner_function(board, '○')
+                if won:
+                    winner = "MiniMax"
+                    win_type = win_type_candidate
+                    break
+                if is_full_function(board):
+                    break
 
-            if is_full_function(board):
-                draws += 1
-                break
+            end_time = time.time()
+            current, peak = tracemalloc.get_traced_memory()
+            tracemalloc.stop()
+
+            execution_time = round(end_time - start_time, 4)
+            memory_kb = round(peak / 1024, 2)
+
+            writer.writerow([game_num, winner, execution_time, memory_kb, win_type])
 
     os.system('cls||clear')
-    print(f"Smart Agent won: {smart_wins} times.")
-    print(f"Mini-Max Agent won: {minimax_wins} times.")
-    print(f"The game ended in a draw: {draws} times.")
+
+    # Load data
+    df = pd.read_csv("smart_vs_minimax_per_game.csv")
+
+    # Plot win counts
+    sns.countplot(data=df, x="Winner", palette="pastel")
+    plt.title("Game Outcomes: Smart vs MiniMax")
+    plt.show()
+
+    # Plot execution time per game
+    sns.lineplot(data=df, x="Game", y="Execution Time (s)", label="Execution Time")
+    plt.title("Execution Time per Game")
+    plt.ylabel("Time (s)")
+    plt.grid(True)
+    plt.show()
+
+    # Plot memory usage per game
+    sns.lineplot(data=df, x="Game", y="Memory Usage (KB)", color="purple")
+    plt.title("Memory Usage per Game")
+    plt.ylabel("Memory (KB)")
+    plt.xlabel("Game Number")
+    plt.grid(True)
+    plt.show()
+
+    # Plot overall win type distribution (excluding draws)
+    win_type_counts = df[df["Win Type"] != "None"]["Win Type"].value_counts()
+    sns.barplot(x=win_type_counts.index, y=win_type_counts.values, palette="muted")
+    plt.title("Overall Win Type Distribution")
+    plt.ylabel("Number of Wins")
+    plt.xlabel("Win Type")
+    plt.grid(axis="y")
+    plt.show()
+
+    # Separate graphs for each agent
+    df_wins = df[df["Winner"] != "Draw"]
+    smart_wins_df = df_wins[df_wins["Winner"] == "Smart"]
+    minimax_wins_df = df_wins[df_wins["Winner"] == "MiniMax"]
+
+    smart_win_types = smart_wins_df["Win Type"].value_counts()
+    minimax_win_types = minimax_wins_df["Win Type"].value_counts()
+
+    sns.barplot(x=smart_win_types.index, y=smart_win_types.values, palette="Greens")
+    plt.title("Win Type Distribution - Smart Agent")
+    plt.ylabel("Number of Wins")
+    plt.xlabel("Win Type")
+    plt.grid(axis="y")
+    plt.show()
+
+    sns.barplot(x=minimax_win_types.index, y=minimax_win_types.values, palette="Blues")
+    plt.title("Win Type Distribution - MiniMax Agent")
+    plt.ylabel("Number of Wins")
+    plt.xlabel("Win Type")
+    plt.grid(axis="y")
+    plt.show()
+
 
 
 def ml_vs_minimax(display_function, check_winner_function, is_full_function):
-    ml_wins = 0
-    minimax_wins = 0
-    draws = 0
-    runs = 500
+    import os, time, tracemalloc, csv
+    import pandas as pd
+    import seaborn as sns
+    import matplotlib.pyplot as plt
+
+    runs = 100
     os.system('cls||clear')
     print("Loading...")
 
     ml_agent = MachineLearningAgent(player_symbol='●')
-    minimax_agent = Minimax_Agent(depth=4)
 
-    for game in range(0, runs):
-        
-        board = [[" " for _ in range(7)] for _ in range(6)]
+    with open("ml_vs_minimax_per_game.csv", mode="w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(["Game", "Winner", "Execution Time (s)", "Memory Usage (KB)", "Win Type"])
 
-        while True:
-            col = ml_agent.choose_move(board)
-            for row in range(5,-1,-1):
-                if board[row][col] == " ":
-                    board[row][col] = '●'
-                    break
-
-            if check_winner_function(board, '●'):
-                ml_wins += 1
-                break
-
-            if is_full_function(board):
-                draws += 1
-                break
-
-
+        for game_num in range(runs):
+            board = [[" " for _ in range(7)] for _ in range(6)]
             minimax_agent = Minimax_Agent(depth=4)
-            col = minimax_agent.best_move(board, check_winner_function, is_full_function)
-            for row in range(5,-1,-1):
-                if board[row][col] == " ":
-                    board[row][col] = '○'
+
+            tracemalloc.start()
+            start_time = time.time()
+
+            winner = "Draw"
+            win_type = "None"
+
+            while True:
+                col = ml_agent.choose_move(board)
+                for row in range(5, -1, -1):
+                    if board[row][col] == " ":
+                        board[row][col] = '●'
+                        break
+
+                won, win_type_candidate = check_winner_function(board, '●')
+                if won:
+                    winner = "Machine Learning"
+                    win_type = win_type_candidate
+                    break
+                if is_full_function(board):
                     break
 
-            if check_winner_function(board, '○'):
-                minimax_wins += 1
-                break
+                minimax_agent = Minimax_Agent(depth=4)
+                col = minimax_agent.best_move(board, check_winner_function, is_full_function)
+                for row in range(5, -1, -1):
+                    if board[row][col] == " ":
+                        board[row][col] = '○'
+                        break
 
-            if is_full_function(board):
-                draws += 1
-                break
+                won, win_type_candidate = check_winner_function(board, '○')
+                if won:
+                    winner = "MiniMax"
+                    win_type = win_type_candidate
+                    break
+                if is_full_function(board):
+                    break
+
+            end_time = time.time()
+            current, peak = tracemalloc.get_traced_memory()
+            tracemalloc.stop()
+
+            execution_time = round(end_time - start_time, 4)
+            memory_kb = round(peak / 1024, 2)
+
+            writer.writerow([game_num, winner, execution_time, memory_kb, win_type])
 
     os.system('cls||clear')
-    print(f"Machine Learning Agent won: {ml_wins} times.")
-    print(f"Mini-Max Agent won: {minimax_wins} times.")
-    print(f"The game ended in a draw: {draws} times.")
+
+    # Load and visualize results
+    df = pd.read_csv("ml_vs_minimax_per_game.csv")
+
+    sns.countplot(data=df, x="Winner", palette="Set2")
+    plt.title("Game Outcomes: Machine Learning vs MiniMax")
+    plt.show()
+
+    sns.lineplot(data=df, x="Game", y="Execution Time (s)")
+    plt.title("Execution Time per Game")
+    plt.ylabel("Time (s)")
+    plt.grid(True)
+    plt.show()
+
+    sns.lineplot(data=df, x="Game", y="Memory Usage (KB)", color="purple")
+    plt.title("Memory Usage per Game")
+    plt.ylabel("Memory (KB)")
+    plt.xlabel("Game Number")
+    plt.grid(True)
+    plt.show()
+
+    win_type_counts = df[df["Win Type"] != "None"]["Win Type"].value_counts()
+    sns.barplot(x=win_type_counts.index, y=win_type_counts.values, palette="muted")
+    plt.title("Overall Win Type Distribution")
+    plt.ylabel("Number of Wins")
+    plt.xlabel("Win Type")
+    plt.grid(axis="y")
+    plt.show()
+
+    df_wins = df[df["Winner"] != "Draw"]
+    ml_wins_df = df_wins[df_wins["Winner"] == "Machine Learning"]
+    minimax_wins_df = df_wins[df_wins["Winner"] == "MiniMax"]
+
+    ml_win_types = ml_wins_df["Win Type"].value_counts()
+    minimax_win_types = minimax_wins_df["Win Type"].value_counts()
+
+    sns.barplot(x=ml_win_types.index, y=ml_win_types.values, palette="Blues")
+    plt.title("Win Type Distribution - Machine Learning Agent")
+    plt.ylabel("Number of Wins")
+    plt.xlabel("Win Type")
+    plt.grid(axis="y")
+    plt.show()
+
+    sns.barplot(x=minimax_win_types.index, y=minimax_win_types.values, palette="Oranges")
+    plt.title("Win Type Distribution - MiniMax Agent")
+    plt.ylabel("Number of Wins")
+    plt.xlabel("Win Type")
+    plt.grid(axis="y")
+    plt.show()

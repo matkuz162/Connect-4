@@ -1,0 +1,11 @@
+Game,Winner,Execution Time (s),Memory Usage (KB),Win Type
+0,MiniMax,23.1571,19069.87,Horizontal
+1,MiniMax,18.9756,19027.99,Horizontal
+2,MiniMax,19.9984,19029.98,Horizontal
+3,MiniMax,31.8658,19034.81,Horizontal
+4,MiniMax,26.7755,19026.63,Horizontal
+5,MiniMax,12.5574,19024.68,Horizontal
+6,MiniMax,22.6243,19027.97,Horizontal
+7,MiniMax,21.2438,19029.5,Horizontal
+8,MiniMax,26.5512,19027.51,Horizontal
+9,MiniMax,17.9483,19026.18,Horizontal

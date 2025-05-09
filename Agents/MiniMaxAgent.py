@@ -1,3 +1,7 @@
+#www.youtube.com/watch?si=Q0eNePq0baduDOUK&v=MMLtza3CZFM&feature=youtu.be
+#i used this video to help me implement minimax as it taught me the concept of windows
+
+
 import random
 import os
 import time
@@ -67,11 +71,15 @@ class Minimax_Agent:
         
 
     def minimax(self, board, depth, alpha, beta, is_maximizing, check_winner_function, is_full_function):
-        if check_winner_function(board, self.ai_player):
+        won, _ = check_winner_function(board, self.ai_player)
+        if won:
             return 1000 - depth
-        elif check_winner_function(board, self.human_player):
+
+        won, _ = check_winner_function(board, self.human_player)
+        if won:
             return depth - 1000
-        elif is_full_function(board) or depth == self.max_depth:
+
+        if is_full_function(board) or depth == self.max_depth:
             return self.evaluate_board(board)
 
         valid_columns = self.get_valid_columns(board)
