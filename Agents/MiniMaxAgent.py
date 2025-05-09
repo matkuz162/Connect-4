@@ -70,7 +70,7 @@ class AI_minimax_Agent:
         if check_winner_function(board, self.ai_player):
             return 1000 - depth
         elif check_winner_function(board, self.human_player):
-            return -1000 + depth
+            return depth - 1000
         elif is_full_function(board) or depth == self.max_depth:
             return self.evaluate_board(board)
 
