@@ -1,3 +1,5 @@
+#imports
+
 import random
 import time
 import os
@@ -5,6 +7,7 @@ import os
 
 def smart_agent_move(board, display_function, check_winner_function,icon,displayed):
 
+    #selects icon for agent and opponent
     if icon == '○':
         opposite_icon ='●'
     elif icon =='●':
@@ -60,13 +63,14 @@ def smart_agent_move(board, display_function, check_winner_function,icon,display
         else:
             random_col = random.randint(0,6)
 
-
+#gravity
 def find_row_for_col(board, col):
     for row in range(5, -1, -1):
         if board[row][col] == " ":
             return row
     return None
 
+#gets possible moves
 def get_available_moves(board):
     available_move = [col for col in range(7) if board[0][col] == " "]
     return available_move
