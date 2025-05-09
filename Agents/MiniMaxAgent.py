@@ -1,5 +1,6 @@
 #www.youtube.com/watch?si=Q0eNePq0baduDOUK&v=MMLtza3CZFM&feature=youtu.be
 #i used this video to help me implement minimax as it taught me the concept of windows
+#week 6s lab session was used for the main structure of the minimax agent
 
 
 import random
