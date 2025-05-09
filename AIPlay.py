@@ -17,6 +17,11 @@ from Agents.MachineLearningAgent import MachineLearningAgent
 # memory usage
 
 
+# Accuracy Metrics (win rate, draw rate & loss rate).Accuracy Metrics (win rate, draw rate & loss rate).
+# Efficiency Metrics (Execution time
+# Game-Level Metrics (Game Length, Winning Patterns: frequency of horizontal, vertical, diagonal winning strategies
+# Robustness Metrics (i.e., performance against different opponents)
+# Resource Utilization Metrics (i.e., memory usage)
 
 
 def random_vs_smart(display_function, check_winner_function, is_full_function):
