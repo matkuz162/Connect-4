@@ -111,7 +111,7 @@ def smart_vs_minimax(display_function, check_winner_function, is_full_function):
     import seaborn as sns
     import matplotlib.pyplot as plt
 
-    runs = 500
+    runs = 100
     os.system('cls||clear')
     print("Loading...")
 
